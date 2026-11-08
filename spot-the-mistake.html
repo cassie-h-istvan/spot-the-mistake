@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Spot the Mistake</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <style>
+      /* Shabby Script Archive brand kit:
+         Deep Burgundy #3B0E12 · Antique Gold #DBC186 · Aged Bronze #8C6D40
+         Parchment Cream #EBE5D5 · Tea Stain Beige #D4C8B0 · Charcoal Sepia #423F3B */
+      :root {
+        --burgundy: #3B0E12;
+        --gold: #DBC186;
+        --bronze: #8C6D40;
+        --parchment: #EBE5D5;
+        --tea: #D4C8B0;
+        --sepia: #423F3B;
+        --bg: #EBE5D5;
+        --surface: #FBF8EF;
+        --surface-2: #E3D9C3;
+        --ink: #423F3B;
+        --ink-soft: #6B6257;
+        --heading: #3B0E12;
+        --line: #CBBd9e;
+        --rust: #7A2230;
+        --rust-bg: #F3E3DC;
+        --green: #6E5426;
+        --green-bg: #EFE7CF;
+        --amber: #8C6D40;
+        --amber-bg: #F4ECD4;
+        --accent: #3B0E12;
+        --shadow: 0 1px 2px rgba(59,14,18,.08), 0 10px 28px rgba(59,14,18,.08);
+        /* Iridescent finish — soft pastel rainbow tints, kept faint so the
+           brand colors stay in charge */
+        --iri-pink: #F2C4CE;
+        --iri-peach: #F5D9A8;
+        --iri-mint: #C9DFC0;
+        --iri-aqua: #BFDCD6;
+        --iri-sky: #C3D4E8;
+        --iri-lilac: #DCCFE8;
+        --glow-a: rgba(242,196,206,.5);
+        --glow-b: rgba(191,220,214,.46);
+        --glow-c: rgba(245,217,168,.44);
+        --sheen-card: .5;
+        --sparkle-op: .32;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #241114;
+          --surface: #33201F;
+          --surface-2: #3E2A24;
+          --ink: #EBE5D5;
+          --ink-soft: #CFC3A9;
+          --heading: #DBC186;
+          --line: #5A463A;
+          --rust: #E8A9A0;
+          --rust-bg: #472227;
+          --green: #DBC186;
+          --green-bg: #3E3423;
+          --amber: #DBC186;
+          --amber-bg: #3E3423;
+          --accent: #DBC186;
+          --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.3);
+          --glow-a: rgba(242,196,206,.16);
+          --glow-b: rgba(191,220,214,.14);
+          --glow-c: rgba(245,217,168,.13);
+          --sheen-card: .34;
+          --sparkle-op: .22;
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(880px 460px at 10% -4%, var(--glow-a), transparent 62%),
+          radial-gradient(820px 440px at 90% 2%, var(--glow-b), transparent 62%),
+          radial-gradient(760px 520px at 50% 108%, var(--glow-c), transparent 62%),
+          var(--bg);
+        color: var(--ink);
+        font-family: "Lora", Georgia, "Times New Roman", serif;
+        line-height: 1.55;
+        font-size: 17px;
+      }
+      /* Drifting pearlescent light across the whole page */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: linear-gradient(115deg,
+          transparent 28%,
+          rgba(255,255,255,.34) 40%,
+          rgba(242,196,206,.22) 47%,
+          rgba(201,223,192,.20) 53%,
+          rgba(191,220,214,.22) 58%,
+          rgba(255,255,255,.16) 64%,
+          transparent 76%);
+        background-size: 260% 260%;
+        animation: iri-drift 16s ease-in-out infinite alternate;
+      }
+      /* Tiny scattered sparkles, like light catching dust motes */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: var(--sparkle-op);
+        background-image:
+          radial-gradient(circle, rgba(255,255,255,.95) 1.3px, transparent 1.8px),
+          radial-gradient(circle, rgba(219,193,134,.85) 1px, transparent 1.5px),
+          radial-gradient(circle, rgba(242,196,206,.8) 1px, transparent 1.5px);
+        background-size: 150px 150px, 96px 96px, 210px 210px;
+        background-position: 0 0, 34px 46px, 70px 18px;
+      }
+      @keyframes iri-drift {
+        from { background-position: 0% 40%; }
+        to { background-position: 100% 60%; }
+      }
+      @keyframes iri-sheen {
+        from { background-position: 0% 0%; }
+        to { background-position: 100% 100%; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body::before { animation: none; }
+      }
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 40px 20px 56px;
+      }
+      @media (min-width: 640px) {
+        .wrap { padding: 56px 28px 72px; }
+        body { font-size: 18px; }
+      }
+
+      header { margin-bottom: 36px; }
+      .kicker {
+        display: inline-block;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--burgundy);
+        border: 1px solid var(--bronze);
+        background: linear-gradient(100deg, var(--gold) 0%, var(--iri-peach) 28%, #EFD3DC 52%, #CFE3D8 76%, var(--gold) 100%);
+        background-size: 220% 220%;
+        animation: iri-sheen 10s ease-in-out infinite alternate;
+        box-shadow: 0 2px 10px rgba(219,193,134,.45), inset 0 1px 0 rgba(255,255,255,.65);
+        padding: 6px 10px;
+        border-radius: 999px;
+        margin-bottom: 18px;
+      }
+      h1 {
+        font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+        font-weight: 700;
+        color: var(--heading);
+        font-size: clamp(38px, 7vw, 56px);
+        line-height: 1.02;
+        letter-spacing: -.02em;
+        margin: 0 0 14px;
+        text-shadow: 0 1px 0 rgba(255,255,255,.55), 0 0 26px rgba(242,196,206,.4), 0 0 46px rgba(191,220,214,.3);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .kicker { animation: none; }
+      }
+      .lede {
+        font-size: 19px;
+        line-height: 1.5;
+        color: var(--ink-soft);
+        margin: 0;
+        max-width: 58ch;
+      }
+      .lede strong { color: var(--ink); }
+
+      .intro-note {
+        margin-top: 22px;
+        background: linear-gradient(120deg, var(--surface-2), rgba(242,196,206,.3) 55%, rgba(191,220,214,.3));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 15.5px;
+        color: var(--ink-soft);
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .intro-note b { color: var(--ink); white-space: nowrap; }
+
+      .cards { display: grid; gap: 22px; }
+
+      article.card {
+        position: relative;
+        background:
+          linear-gradient(150deg, rgba(255,255,255,.55), rgba(255,255,255,0) 34%),
+          var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: var(--shadow), 0 0 26px rgba(219,193,134,.18), 0 0 44px rgba(242,196,206,.14);
+        overflow: hidden;
+      }
+      /* Rainbow light catching each card, drifting very slowly */
+      article.card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        opacity: var(--sheen-card);
+        background: linear-gradient(125deg,
+          rgba(255,255,255,.55) 0%,
+          rgba(242,196,206,.16) 26%,
+          rgba(245,217,168,.14) 44%,
+          rgba(191,220,214,.16) 62%,
+          rgba(195,212,232,.13) 78%,
+          transparent 92%);
+        background-size: 240% 240%;
+        animation: iri-sheen 13s ease-in-out infinite alternate;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        article.card::after { animation: none; }
+      }
+      .card-top {
+        padding: 22px 22px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      @media (min-width: 640px) { .card-top { padding: 26px 28px 0; } }
+      .num {
+        flex: 0 0 auto;
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 24%, #7A2A38 0%, var(--burgundy) 58%, #2A090D 100%);
+        color: var(--gold);
+        border: 1px solid var(--bronze);
+        box-shadow: 0 0 0 2px rgba(219,193,134,.35), 0 0 16px rgba(242,196,206,.5), 0 0 26px rgba(191,220,214,.35), inset 0 1px 2px rgba(255,255,255,.5);
+        display: grid; place-items: center;
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 800;
+        font-size: 18px;
+        margin-top: 2px;
+      }
+      h2 {
+        font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+        font-weight: 700;
+        color: var(--heading);
+        font-size: 26px;
+        line-height: 1.15;
+        margin: 4px 0 4px;
+        letter-spacing: -.01em;
+      }
+      .card-sub { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+
+      /* Visual strip */
+      .visual {
+        position: relative;
+        margin: 18px 22px 0;
+        border: 1px dashed var(--line);
+        background: var(--surface-2);
+        border-radius: 12px;
+        padding: 18px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 110px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 0 24px rgba(242,196,206,.16);
+      }
+      /* Pearlescent gleam lying over each picture */
+      .visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        background: linear-gradient(118deg,
+          rgba(255,255,255,.42) 0%,
+          transparent 38%,
+          rgba(242,196,206,.20) 60%,
+          rgba(201,223,192,.16) 72%,
+          rgba(191,220,214,.20) 84%,
+          transparent 100%);
+      }
+      @media (min-width: 640px) { .visual { margin: 20px 28px 0; } }
+
+      /* Cats visual — more lifelike sitting cats */
+      .cats { gap: 6px 14px; flex-wrap: wrap; background: linear-gradient(to bottom, var(--surface-2) 0 68%, #D4C8B0 68.2% 69%, #C3B28C 69.2% 100%); }
+      @media (prefers-color-scheme: dark) { .cats { background: linear-gradient(to bottom, var(--surface-2) 0 68%, #5A463A 68.2% 69%, #4A382E 69.2% 100%); } }
+      .cat { width: 118px; height: 132px; display: grid; place-items: end center; filter: drop-shadow(0 6px 6px rgba(0,0,0,.14)); }
+      @media (max-width: 420px){ .cat{ width: 96px; height: 112px; } }
+      .cat svg { width: 100%; height: 100%; overflow: visible; }
+      .cats-caption { width: 100%; text-align: center; font-size: 13.5px; font-weight: 600; color: var(--ink-soft); margin: 2px 0 0; }
+      .cats-caption strong { color: var(--ink); }
+
+      /* Sign visual — realistic shop window + hanging wooden sign */
+      .sign-scene { padding: 10px 12px 14px; background: linear-gradient(180deg,#D4C8B0,#EBE5D5); }
+      @media (prefers-color-scheme: dark){ .sign-scene{ background: linear-gradient(180deg,#3E2A24,#33201F); } }
+      .sign-wrap { text-align: center; width: 100%; max-width: 430px; }
+      .sign-wrap svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 8px 10px rgba(0,0,0,.14)); }
+      .sign-caption { margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); font-weight: 600; }
+
+      /* Hands — simple flat hands, every finger straight and spread out */
+      .fingers { gap: 14px 22px; flex-wrap: wrap; align-items: flex-start; background: linear-gradient(180deg,var(--surface-2),#EBE5D5); }
+      @media (prefers-color-scheme: dark){ .fingers{ background: linear-gradient(180deg,var(--surface-2),#2A1A16); } }
+      .hand-group { text-align: center; width: 168px; }
+      @media (max-width: 420px){ .hand-group{ width: 148px; } }
+      .hand-art { height: 168px; display: grid; place-items: end center; filter: drop-shadow(0 7px 7px rgba(90,50,20,.18)); }
+      .hand-art svg { height: 100%; width: auto; max-width: 100%; }
+      .hand-dots { display:flex; justify-content:center; gap:4px; margin-top:6px; flex-wrap:wrap; }
+      .hand-dots span{ width:22px; height:22px; border-radius:50%; background:var(--surface); border:1.5px solid var(--line); display:grid; place-items:center; font-size:11px; font-weight:800; color:var(--ink-soft); }
+      .hand-dots span.extra{ border-color:var(--rust); color:var(--rust); background:var(--rust-bg); }
+      .finger-label { margin-top: 8px; font-size: 14px; font-weight: 800; line-height: 1.3; }
+      .finger-label span { display: block; font-weight: 600; color: var(--ink-soft); font-size: 12.5px; }
+      .vs { font-weight: 800; color: var(--ink-soft); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; align-self: center; width:32px; height:32px; border-radius:50%; background:var(--surface); border:1px solid var(--line); display:grid; place-items:center; flex:0 0 auto; }
+
+      /* Rows */
+      .rows { padding: 18px 22px 22px; display: grid; gap: 10px; }
+      @media (min-width: 640px) { .rows { padding: 20px 28px 28px; } }
+      .row {
+        display: grid;
+        grid-template-columns: 118px 1fr;
+        gap: 12px;
+        padding: 13px 14px;
+        border-radius: 10px;
+        align-items: start;
+      }
+      @media (max-width: 520px) {
+        .row { grid-template-columns: 1fr; gap: 4px; }
+      }
+      .row dt {
+        font-size: 12.5px;
+        font-weight: 800;
+        letter-spacing: .09em;
+        text-transform: uppercase;
+        padding-top: 2px;
+        display: flex; align-items: center; gap: 6px;
+      }
+      .row dd { margin: 0; font-size: 16.5px; line-height: 1.5; }
+      .row.wrong { background: linear-gradient(120deg, var(--rust-bg), rgba(242,196,206,.35)); box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
+      .row.wrong dt { color: var(--rust); }
+      .row.right { background: linear-gradient(120deg, var(--green-bg), rgba(191,220,214,.32)); box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
+      .row.right dt { color: var(--green); }
+      .row.why { background: linear-gradient(120deg, var(--amber-bg), rgba(245,217,168,.4)); box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
+      .row.why dt { color: var(--amber); }
+      .row dd strong { font-weight: 800; }
+      .quote { font-style: italic; }
+
+      footer {
+        margin-top: 32px;
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+      }
+      .takeaway {
+        position: relative;
+        overflow: hidden;
+        background: var(--burgundy);
+        color: var(--parchment);
+        border: 1px solid var(--bronze);
+        border-radius: 14px;
+        padding: 20px 20px 22px;
+        box-shadow: 0 0 28px rgba(219,193,134,.22), 0 0 48px rgba(242,196,206,.16);
+      }
+      /* Iridescent light sweeping the closing panel */
+      .takeaway::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        background: linear-gradient(120deg,
+          rgba(255,255,255,.28) 0%,
+          rgba(242,196,206,.20) 30%,
+          rgba(245,217,168,.16) 50%,
+          rgba(191,220,214,.20) 70%,
+          transparent 92%);
+        background-size: 240% 240%;
+        animation: iri-sheen 12s ease-in-out infinite alternate;
+      }
+      .takeaway > * { position: relative; z-index: 1; }
+      @media (prefers-reduced-motion: reduce) {
+        .takeaway::after { animation: none; }
+      }
+      @media (prefers-color-scheme: dark) {
+        .takeaway { background: var(--gold); color: var(--burgundy); }
+      }
+      .takeaway h3 {
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 700;
+        margin: 0 0 8px;
+        font-size: 21px;
+        line-height: 1.2;
+      }
+      .takeaway p { margin: 0; font-size: 16px; line-height: 1.55; opacity: .92; }
+      .foot-small {
+        margin-top: 16px;
+        text-align: center;
+        color: var(--ink-soft);
+        font-size: 13.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <span class="kicker">Checking AI work</span>
+        <h1>Spot the Mistake</h1>
+        <p class="lede">AI can sound sure of itself and still be wrong. Here are <strong>3 small mistakes</strong> — what the AI said, what is really true, and why it matters.</p>
+        <div class="intro-note">
+          <b>How to read it →</b>
+          <span>Each example has the same 3 parts, so you can check them fast: <strong>AI said</strong>, <strong>Really</strong>, and <strong>Why it matters</strong>.</span>
+        </div>
+      </header>
+
+      <main class="cards">
+
+        <!-- 1 -->
+        <article class="card" aria-labelledby="t1">
+          <div class="card-top">
+            <span class="num" aria-hidden="true">1</span>
+            <div>
+              <h2 id="t1">The counting mistake</h2>
+              <p class="card-sub">A simple count — gotten wrong.</p>
+            </div>
+          </div>
+
+          <div class="visual cats" role="img" aria-label="Picture with three realistic sitting cats: a grey tabby, a ginger tabby, and a black cat">
+            <!-- Grey tabby -->
+            <div class="cat" aria-hidden="true"><svg viewBox="0 0 120 132" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="60" cy="124" rx="42" ry="5" fill="rgba(0,0,0,.12)"/>
+              <path d="M92 96 C108 100 112 116 100 122 C90 126 76 122 84 114 C90 108 98 110 96 102 Z" fill="#7d8380"/><path d="M94 104 L106 108 M92 113 L103 118" stroke="#5d6461" stroke-width="3" stroke-linecap="round"/>
+              <path d="M60 48 C82 48 92 72 94 96 C95 114 84 124 60 124 C36 124 25 114 26 96 C28 72 38 48 60 48Z" fill="#8f9592"/>
+              <ellipse cx="60" cy="98" rx="20" ry="24" fill="#cdd1cc"/>
+              <path d="M32 78 Q44 84 32 90 M88 78 Q76 84 88 90 M34 100 Q45 104 34 108 M86 100 Q75 104 86 108" stroke="#626965" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <ellipse cx="46" cy="120" rx="13" ry="7" fill="#aeb3af"/><ellipse cx="74" cy="120" rx="13" ry="7" fill="#aeb3af"/><path d="M42 116 L42 122 M50 116 L50 122 M70 116 L70 122 M78 116 L78 122" stroke="#626965" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M36 30 L32 6 L54 18 Z" fill="#8f9592"/><path d="M84 30 L88 6 L66 18 Z" fill="#8f9592"/><path d="M38 26 L36 12 L49 19 Z" fill="#e9a8a2"/><path d="M82 26 L84 12 L71 19 Z" fill="#e9a8a2"/>
+              <circle cx="60" cy="38" r="27" fill="#9aa09d"/><ellipse cx="60" cy="48" rx="16" ry="11" fill="#cdd1cc"/>
+              <path d="M50 14 L52 22 M60 12 L60 21 M70 14 L68 22" stroke="#626965" stroke-width="3" stroke-linecap="round"/>
+              <ellipse cx="49" cy="37" rx="6" ry="7" fill="#5da86e"/><ellipse cx="71" cy="37" rx="6" ry="7" fill="#5da86e"/><ellipse cx="49" cy="37" rx="2.2" ry="6" fill="#141816"/><ellipse cx="71" cy="37" rx="2.2" ry="6" fill="#141816"/><circle cx="47" cy="34" r="1.6" fill="#fff"/>
+              <circle cx="69" cy="34" r="1.6" fill="#fff"/><path d="M56 46 L64 46 L60 51 Z" fill="#d96f6f"/><path d="M60 51 Q60 55 55 54 M60 51 Q60 55 65 54" stroke="#5d3a3a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+              <path d="M42 44 L18 40 M43 49 L20 50 M72 44 L96 40 M71 49 L94 50" stroke="#e8e8e2" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></div>
+            <!-- Ginger tabby -->
+            <div class="cat" aria-hidden="true"><svg viewBox="0 0 120 132" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="60" cy="124" rx="42" ry="5" fill="rgba(0,0,0,.12)"/>
+              <path d="M28 96 C12 100 8 116 20 122 C30 126 44 122 36 114 C30 108 22 110 24 102 Z" fill="#c8732a"/><path d="M26 104 L14 108 M28 113 L17 118" stroke="#9e4f14" stroke-width="3" stroke-linecap="round"/>
+              <path d="M60 48 C82 48 92 72 94 96 C95 114 84 124 60 124 C36 124 25 114 26 96 C28 72 38 48 60 48Z" fill="#dd8a3e"/>
+              <ellipse cx="60" cy="98" rx="20" ry="24" fill="#f6cf92"/>
+              <path d="M32 78 Q44 84 32 90 M88 78 Q76 84 88 90 M34 100 Q45 104 34 108 M86 100 Q75 104 86 108" stroke="#b45f1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <ellipse cx="46" cy="120" rx="13" ry="7" fill="#eaa85c"/><ellipse cx="74" cy="120" rx="13" ry="7" fill="#eaa85c"/><path d="M42 116 L42 122 M50 116 L50 122 M70 116 L70 122 M78 116 L78 122" stroke="#9e4f14" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M36 30 L32 6 L54 18 Z" fill="#dd8a3e"/><path d="M84 30 L88 6 L66 18 Z" fill="#dd8a3e"/><path d="M38 26 L36 12 L49 19 Z" fill="#f2b0a6"/><path d="M82 26 L84 12 L71 19 Z" fill="#f2b0a6"/>
+              <circle cx="60" cy="38" r="27" fill="#e89a4a"/><ellipse cx="60" cy="48" rx="16" ry="11" fill="#f6cf92"/>
+              <path d="M50 14 L52 22 M60 12 L60 21 M70 14 L68 22" stroke="#b45f1c" stroke-width="3" stroke-linecap="round"/>
+              <ellipse cx="49" cy="37" rx="6" ry="7" fill="#3f9e58"/><ellipse cx="71" cy="37" rx="6" ry="7" fill="#3f9e58"/><ellipse cx="49" cy="37" rx="2.2" ry="6" fill="#141816"/><ellipse cx="71" cy="37" rx="2.2" ry="6" fill="#141816"/><circle cx="47" cy="34" r="1.6" fill="#fff"/><circle cx="69" cy="34" r="1.6" fill="#fff"/>
+              <path d="M56 46 L64 46 L60 51 Z" fill="#c9554d"/><path d="M60 51 Q60 55 55 54 M60 51 Q60 55 65 54" stroke="#6b3525" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+              <path d="M42 44 L18 40 M43 49 L20 50 M72 44 L96 40 M71 49 L94 50" stroke="#fff6e6" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></div>
+            <!-- Black cat -->
+            <div class="cat" aria-hidden="true"><svg viewBox="0 0 120 132" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="60" cy="124" rx="42" ry="5" fill="rgba(0,0,0,.16)"/>
+              <path d="M92 96 C108 100 112 116 100 122 C90 126 76 122 84 114 C90 108 98 110 96 102 Z" fill="#24272a"/>
+              <path d="M60 48 C82 48 92 72 94 96 C95 114 84 124 60 124 C36 124 25 114 26 96 C28 72 38 48 60 48Z" fill="#32363a"/>
+              <ellipse cx="60" cy="98" rx="19" ry="24" fill="#484d52"/>
+              <ellipse cx="46" cy="120" rx="13" ry="7" fill="#3d4146"/><ellipse cx="74" cy="120" rx="13" ry="7" fill="#3d4146"/><path d="M42 116 L42 122 M50 116 L50 122 M70 116 L70 122 M78 116 L78 122" stroke="#17191b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M36 30 L32 6 L54 18 Z" fill="#32363a"/><path d="M84 30 L88 6 L66 18 Z" fill="#32363a"/><path d="M38 26 L36 12 L49 19 Z" fill="#8e5a62"/><path d="M82 26 L84 12 L71 19 Z" fill="#8e5a62"/>
+              <circle cx="60" cy="38" r="27" fill="#3a3e42"/><ellipse cx="60" cy="48" rx="15" ry="11" fill="#4b5055"/>
+              <ellipse cx="49" cy="37" rx="6" ry="7" fill="#e8a91c"/><ellipse cx="71" cy="37" rx="6" ry="7" fill="#e8a91c"/><ellipse cx="49" cy="37" rx="2.2" ry="6" fill="#0e0e0e"/><ellipse cx="71" cy="37" rx="2.2" ry="6" fill="#0e0e0e"/><circle cx="47" cy="34" r="1.6" fill="#fff"/><circle cx="69" cy="34" r="1.6" fill="#fff"/>
+              <path d="M56 46 L64 46 L60 51 Z" fill="#d98a8a"/><path d="M60 51 Q60 55 55 54 M60 51 Q60 55 65 54" stroke="#111" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+              <path d="M42 44 L18 40 M43 49 L20 50 M72 44 L96 40 M71 49 L94 50" stroke="#e8e8e2" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></div>
+            <p class="cats-caption">Count them: <strong>1 &nbsp;·&nbsp; 2 &nbsp;·&nbsp; 3 cats</strong> — grey tabby, ginger tabby, black cat</p>
+          </div>
+
+          <dl class="rows">
+            <div class="row wrong">
+              <dt>✕ &nbsp;AI said</dt>
+              <dd><span class="quote">“There are 2 cats in the picture.”</span></dd>
+            </div>
+            <div class="row right">
+              <dt>✓ &nbsp;Really</dt>
+              <dd>There are <strong>3 cats</strong>.</dd>
+            </div>
+            <div class="row why">
+              <dt>Why it matters</dt>
+              <dd>Counting right is a big part of checking AI work.</dd>
+            </div>
+          </dl>
+        </article>
+
+        <!-- 2 -->
+        <article class="card" aria-labelledby="t2">
+          <div class="card-top">
+            <span class="num" aria-hidden="true">2</span>
+            <div>
+              <h2 id="t2">The sign</h2>
+              <p class="card-sub">One word, read the wrong way.</p>
+            </div>
+          </div>
+
+          <div class="visual sign-scene" role="img" aria-label="A realistic wooden Closed sign hanging by chains in a shop window">
+            <div class="sign-wrap">
+              <svg viewBox="0 0 430 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- shop window behind -->
+                <rect x="6" y="4" width="418" height="192" rx="10" fill="#7a4a2e"/>
+                <rect x="16" y="14" width="398" height="172" rx="6" fill="#a8c2c4"/>
+                <rect x="16" y="14" width="398" height="172" rx="6" fill="url(#glass)"/>
+                <defs><linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".55"/><stop offset=".45" stop-color="#ffffff" stop-opacity=".05"/><stop offset=".55" stop-color="#ffffff" stop-opacity=".28"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient><linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfaf2"/><stop offset="1" stop-color="#efe6d2"/></linearGradient></defs>
+                <path d="M215 14 L215 186 M16 100 L414 100" stroke="#7a4a2e" stroke-width="8"/>
+                <rect x="28" y="26" width="80" height="52" rx="4" fill="#2e4a4d" opacity=".25"/><rect x="322" y="112" width="80" height="52" rx="4" fill="#2e4a4d" opacity=".18"/>
+                <!-- top bar + hooks -->
+                <rect x="70" y="18" width="290" height="10" rx="5" fill="#3b2a1e"/>
+                <circle cx="118" cy="28" r="6" fill="#222" /><circle cx="312" cy="28" r="6" fill="#222"/>
+                <!-- chains: little links -->
+                <g stroke="#3a3a3a" stroke-width="2.4" fill="none"><path d="M118 28 L138 62 M312 28 L292 62"/><g fill="#555"><circle cx="122" cy="36" r="4"/><circle cx="128" cy="46" r="4"/><circle cx="134" cy="56" r="4"/><circle cx="308" cy="36" r="4"/><circle cx="302" cy="46" r="4"/><circle cx="296" cy="56" r="4"/></g></g>
+                <!-- hanging wooden sign -->
+                <g transform="rotate(-1.2 215 110)">
+                  <rect x="88" y="60" width="254" height="104" rx="10" fill="#5b3a22"/>
+                  <rect x="94" y="66" width="242" height="92" rx="7" fill="url(#wood)" stroke="#d8c9a8" stroke-width="1"/>
+                  <path d="M94 88 Q180 84 336 90 M94 136 Q200 140 336 134" stroke="#d9cdb2" stroke-width="1.2" fill="none" opacity=".7"/>
+                  <circle cx="106" cy="76" r="4" fill="#9a8a6a"/><circle cx="324" cy="76" r="4" fill="#9a8a6a"/><circle cx="106" cy="148" r="4" fill="#9a8a6a"/><circle cx="324" cy="148" r="4" fill="#9a8a6a"/>
+                  <rect x="108" y="74" width="214" height="52" rx="4" fill="none" stroke="#3B0E12" stroke-width="1.4" stroke-dasharray="3 4" opacity=".7"/>
+                  <text x="215" y="118" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="44" font-weight="800" letter-spacing="6" fill="#3B0E12">CLOSED</text>
+                  <text x="215" y="144" text-anchor="middle" font-family="Lora, Georgia, serif" font-size="11" font-weight="700" letter-spacing="2.5" fill="#8C6D40">SORRY, WE ARE CLOSED</text>
+                </g>
+              </svg>
+              <p class="sign-caption">The sign in the picture says Closed — not Open.</p>
+            </div>
+          </div>
+
+          <dl class="rows">
+            <div class="row wrong">
+              <dt>✕ &nbsp;AI said</dt>
+              <dd><span class="quote">“The sign says Open.”</span></dd>
+            </div>
+            <div class="row right">
+              <dt>✓ &nbsp;Really</dt>
+              <dd>The sign says <strong>Closed</strong>.</dd>
+            </div>
+            <div class="row why">
+              <dt>Why it matters</dt>
+              <dd>Someone might drive all the way there for nothing.</dd>
+            </div>
+          </dl>
+        </article>
+
+        <!-- 3 -->
+        <article class="card" aria-labelledby="t3">
+          <div class="card-top">
+            <span class="num" aria-hidden="true">3</span>
+            <div>
+              <h2 id="t3">The hand</h2>
+              <p class="card-sub">A drawing that does not look close enough.</p>
+            </div>
+          </div>
+
+          <div class="visual fingers" role="img" aria-label="Comparison of two simple flat hands with all fingers spread straight out: the AI hand has six straight fingers, the extra one circled, and the real hand has five straight fingers">
+            <!-- AI hand: 6 straight fingers, spread out flat -->
+            <div class="hand-group" aria-hidden="true">
+              <div class="hand-art"><svg viewBox="0 0 160 170" xmlns="http://www.w3.org/2000/svg">
+                <!-- six straight fingers, fanned outward — no folds, no curls -->
+                <g fill="#E7B98A" stroke="#8C6D40" stroke-width="2" stroke-linejoin="round">
+                  <rect x="36.5" y="34" width="15" height="70" rx="7.5" transform="rotate(-26 44 96)"/>
+                  <rect x="50.5" y="20" width="15" height="84" rx="7.5" transform="rotate(-15 58 96)"/>
+                  <rect x="63.5" y="12" width="15" height="92" rx="7.5" transform="rotate(-5 71 96)"/>
+                  <rect x="77.5" y="12" width="15" height="92" rx="7.5" transform="rotate(5 85 96)"/>
+                  <rect x="91.5" y="20" width="15" height="84" rx="7.5" transform="rotate(15 99 96)"/>
+                  <rect x="105.5" y="34" width="15" height="70" rx="7.5" transform="rotate(26 113 96)"/>
+                  <!-- flat palm -->
+                  <path d="M36 90 L124 90 L122 136 C121 156 108 164 80 164 C52 164 39 156 38 136 Z"/>
+                </g>
+                <!-- highlight the extra finger -->
+                <ellipse cx="127" cy="66" rx="13" ry="38" fill="none" stroke="#3B0E12" stroke-width="2.6" stroke-dasharray="5 4" transform="rotate(26 127 66)"/>
+                <circle cx="147" cy="20" r="10" fill="#3B0E12"/><text x="147" y="25" text-anchor="middle" font-size="13" font-weight="800" fill="#DBC186">!</text>
+              </svg></div>
+              <div class="hand-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span class="extra">6</span></div>
+              <p class="finger-label">AI drew: 6 fingers <span>All straight out — one too many ✕, extra one circled</span></p>
+            </div>
+            <span class="vs" aria-hidden="true">vs</span>
+            <!-- Real hand: 5 straight fingers, spread out flat -->
+            <div class="hand-group" aria-hidden="true">
+              <div class="hand-art"><svg viewBox="0 0 160 170" xmlns="http://www.w3.org/2000/svg">
+                <!-- five straight fingers, fanned outward — no folds, no curls -->
+                <g fill="#E7B98A" stroke="#8C6D40" stroke-width="2" stroke-linejoin="round">
+                  <rect x="37" y="34" width="16" height="70" rx="8" transform="rotate(-22 45 96)"/>
+                  <rect x="53" y="18" width="16" height="86" rx="8" transform="rotate(-11 61 96)"/>
+                  <rect x="69" y="10" width="16" height="94" rx="8"/>
+                  <rect x="85" y="18" width="16" height="86" rx="8" transform="rotate(11 93 96)"/>
+                  <rect x="101" y="34" width="16" height="70" rx="8" transform="rotate(22 109 96)"/>
+                  <!-- flat palm -->
+                  <path d="M38 90 L122 90 L120 136 C119 156 106 164 80 164 C54 164 41 156 40 136 Z"/>
+                </g>
+              </svg></div>
+              <div class="hand-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+              <p class="finger-label">Real hand: 5 fingers <span>All straight out ✓</span></p>
+            </div>
+          </div>
+
+          <dl class="rows">
+            <div class="row wrong">
+              <dt>✕ &nbsp;AI said</dt>
+              <dd>AI drew a hand with <span class="quote">6 fingers</span>.</dd>
+            </div>
+            <div class="row right">
+              <dt>✓ &nbsp;Really</dt>
+              <dd>People have <strong>5 fingers</strong>.</dd>
+            </div>
+            <div class="row why">
+              <dt>Why it matters</dt>
+              <dd>It shows the AI did not look close enough.</dd>
+            </div>
+          </dl>
+        </article>
+
+      </main>
+
+      <footer>
+        <div class="takeaway">
+          <h3>What this shows</h3>
+          <p>I look closely, count carefully, and read what is really there — before I trust an AI answer. That is the heart of checking AI work.</p>
+        </div>
+        <p class="foot-small">Spot the Mistake — 3 examples</p>
+      </footer>
+    </div>
+  </body>
+</html>
